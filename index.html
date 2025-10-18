@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TCJ506AM 日语练习：日语动词普通形+可能形</title>
+    <style>
+        :root {
+            --blue: #2f80ed;
+            --light-blue: #d0e6ff;
+            --bg: #f7fbff;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --yellow: #f1c40f;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', Arial, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            color: #0b1220;
+            line-height: 1.6;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            background: #fff;
+            border-bottom: 1px solid #e6eefb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .title {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .top-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .score {
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #e6eefb;
+            font-weight: 600;
+        }
+        
+        .lang-selector {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .lang-btn {
+            padding: 6px 10px;
+            border: 1px solid var(--light-blue);
+            background: white;
+            color: var(--blue);
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .lang-btn.active {
+            background: var(--blue);
+            color: white;
+        }
+        
+        main {
+            padding: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .panel {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid #e6eefb;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .q {
+            padding: 12px;
+            border-left: 4px solid var(--blue);
+            margin: 12px 0;
+            border-radius: 6px;
+            background: #fff;
+        }
+        
+        .qhead {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        input[type="text"] {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 180px;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.2);
+            outline: none;
+        }
+        
+        .smallbtn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--light-blue);
+            background: white;
+            color: var(--blue);
+            cursor: pointer;
+            margin-left: 6px;
+            transition: all 0.2s;
+        }
+        
+        .smallbtn:hover {
+            background: var(--light-blue);
+        }
+        
+        .smallbtn:disabled {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        .bigbtn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 2px solid var(--blue);
+            background: var(--blue);
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .bigbtn:hover {
+            background: #1a6fd8;
+            border-color: #1a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .bigbtn:disabled {
+            background: #a0c4f0;
+            border-color: #a0c4f0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .answer {
+            display: none;
+            margin-top: 12px;
+            padding: 10px;
+            background: #fff8e6;
+            border-radius: 6px;
+            border-left: 3px solid var(--yellow);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .formats {
+            color: #444;
+            margin-top: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .kana {
+            color: #666;
+            margin-left: 6px;
+        }
+        
+        .records {
+            max-height: 240px;
+            overflow: auto;
+            margin-top: 8px;
+        }
+        
+        footer {
+            padding: 12px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e6eefb;
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--blue);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .correct-answer {
+            color: var(--green);
+            font-weight: bold;
+        }
+        
+        .user-answer {
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .user-answer.correct {
+            background: #e8f7ef;
+            border: 1px solid var(--green);
+        }
+        
+        .user-answer.incorrect {
+            background: #fdedec;
+            border: 1px solid var(--red);
+        }
+        
+        .answer-feedback {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .answer-feedback.correct {
+            background: #e8f7ef;
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+        
+        .answer-feedback.incorrect {
+            background: #fdedec;
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+        
+        .sentence {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+        
+        .blank {
+            display: inline-block;
+            width: 120px;
+            margin: 0 5px;
+        }
+        
+        @media (max-width: 800px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .top-right {
+                margin-top: 8px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            input[type="text"] {
+                width: 120px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .bigbtn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .blank {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <div class="title" id="header-title">TCJ506AM 日语练习：日语动词普通形+可能形</div>
+            <div class="meta" id="header-meta">100問の動詞変化練習問題</div>
+        </div>
+        <div class="top-right">
+            <div>
+                <label id="name-label">ニックネーム:</label>
+                <input type="text" id="playerName" placeholder="ニックネームを入力" />
+            </div>
+            <div class="score" id="status">未開始</div>
+            <div class="lang-selector">
+                <button class="lang-btn active" data-lang="zh">中文</button>
+                <button class="lang-btn" data-lang="en">English</button>
+                <button class="lang-btn" data-lang="my">မြန်မာ</button>
+                <button class="lang-btn" data-lang="vi">Tiếng Việt</button>
+                <button class="lang-btn" data-lang="si">සිංහල</button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="panel">
+            <div class="controls">
+                <button class="bigbtn" id="startBtn" disabled>練習を開始</button>
+                <button class="smallbtn" id="submitBtn">回答を提出</button>
+                <button class="smallbtn" id="showAllBtn">すべての答えを表示</button>
+                <button class="smallbtn" id="hideAllBtn">すべての答えを非表示</button>
+                <div style="margin-left: 12px" id="timer">開始時間：—　経過時間：00:00:00</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="formats" id="instructions">説明：100問の動詞変化問題です。各動詞の指定された形を入力してください。Enterキーで回答を確認できます。</div>
+        </div>
+
+        <div class="panel" id="qaPanel">
+            <ol id="questionsList"></ol>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <div class="panel" style="flex: 1; min-width: 260px;">
+                <h4 id="leaderboard-title">ランキング Top 10</h4>
+                <div class="records" id="records"></div>
+            </div>
+            <div class="panel" style="width: 260px;">
+                <h4 id="progress-title">現在の進捗</h4>
+                <div id="progress">回答済み 0 / 100　正解 0</div>
+                <h4 style="margin-top: 10px;" id="help-title">ヘルプ</h4>
+                <div class="small" id="help-text">答えを入力してEnterキーを押すと自動的にチェックされます。すべての問題を完了しなくても提出できます。</div>
+            </div>
+        </div>
+    </main>
+    
+    <footer id="footer-text">TCJ506AM 日语练习：日语动词普通形+可能形 © 2023</footer>
+
+    <script>
+        // 多语言文本
+        const i18n = {
+            zh: {
+                title: "TCJ506AM 日语练习：日语动词普通形+可能形",
+                subtitle: "100道动词变化练习题",
+                nameLabel: "昵称:",
+                namePlaceholder: "输入您的昵称",
+                statusNotStarted: "未开始",
+                statusInProgress: "进行中",
+                startButton: "开始练习",
+                submitButton: "提交答案",
+                showAnswers: "显示所有答案",
+                hideAnswers: "隐藏所有答案",
+                instructions: "说明：100道动词变化问题。请输入每个动词的指定形式。按Enter键确认答案。",
+                leaderboard: "排行榜 Top 10",
+                progress: "当前进度",
+                help: "帮助",
+                helpText: "输入答案后按Enter键自动检查。无需完成所有问题即可提交。",
+                footer: "TCJ506AM 日语练习：日语动词普通形+可能形 © 2023",
+                correctAnswer: "正确答案:",
+                answered: "已答",
+                correct: "正确",
+                of: "/",
+                timeStart: "开始时间：",
+                timeElapsed: "耗时：",
+                submitMessage: "提交完成！",
+                noRecords: "暂无记录",
+                correctFeedback: "✓ 正确！",
+                incorrectFeedback: "✗ 不正确"
+            },
+            en: {
+                title: "TCJ506AM Japanese Practice: Verb Dictionary Form + Potential Form",
+                subtitle: "100 Verb Conjugation Questions",
+                nameLabel: "Nickname:",
+                namePlaceholder: "Enter your nickname",
+                statusNotStarted: "Not Started",
+                statusInProgress: "In Progress",
+                startButton: "Start Practice",
+                submitButton: "Submit Answers",
+                showAnswers: "Show All Answers",
+                hideAnswers: "Hide All Answers",
+                instructions: "Instructions: 100 verb conjugation questions. Please enter the specified form of each verb. Press Enter to check your answer.",
+                leaderboard: "Leaderboard Top 10",
+                progress: "Current Progress",
+                help: "Help",
+                helpText: "Enter your answer and press Enter to check automatically. You can submit without completing all questions.",
+                footer: "TCJ506AM Japanese Practice: Verb Dictionary Form + Potential Form © 2023",
+                correctAnswer: "Correct Answer:",
+                answered: "Answered",
+                correct: "Correct",
+                of: "/",
+                timeStart: "Start Time:",
+                timeElapsed: "Elapsed Time:",
+                submitMessage: "Submission complete!",
+                noRecords: "No records yet",
+                correctFeedback: "✓ Correct!",
+                incorrectFeedback: "✗ Incorrect"
+            },
+            my: {
+                title: "TCJ506AM ဂျပန်စာလေ့ကျင့်ခန်း",
+                subtitle: "ကြိယာ ပုံစံများ လေ့ကျင့်ခန်း ၁၀၀ ခု",
+                nameLabel: "နာမည်:",
+                namePlaceholder: "သင့်နာမည်ထည့်ပါ",
+                statusNotStarted: "မစရသေး",
+                statusInProgress: "လုပ်ဆောင်နေသည်",
+                startButton: "လေ့ကျင့်မှုစတင်ရန်",
+                submitButton: "အဖြေတင်ရန်",
+                showAnswers: "အဖြေအားလုံးပြရန်",
+                hideAnswers: "အဖြေအားလုံးဖျောက်ရန်",
+                instructions: "ရှင်းလင်းချက်: ကြိယာပုံစံ ၁၀၀ ခု။ ကြိယာ၏ပုံစံကိုရိုက်ထည့်ပါ။ Enter နှိပ်၍အဖြေစစ်ဆေးနိုင်သည်။",
+                leaderboard: "ထိပ်တန်း ၁၀ ဦး",
+                progress: "လက်ရှိအခြေအနေ",
+                help: "အကူအညီ",
+                helpText: "အဖြေရိုက်ထည့်ပြီး Enter နှိပ်ပါ။ မေးခွန်းအားလုံးမပြီးစီးလည်းတင်နိုင်သည်။",
+                footer: "TCJ506AM ဂျပန်စာလေ့ကျင့်ခန်း © 2023",
+                correctAnswer: "မှန်ကန်သောအဖြေ:",
+                answered: "ဖြေဆို",
+                correct: "မှန်",
+                of: "/",
+                timeStart: "စတင်ချိန်:",
+                timeElapsed: "ကြာချိန်:",
+                submitMessage: "တင်ပြီးပါပြီ!",
+                noRecords: "မှတ်တမ်းမရှိသေး",
+                correctFeedback: "✓ မှန်ပါသည်!",
+                incorrectFeedback: "✗ မှားပါသည်"
+            },
+            vi: {
+                title: "TCJ506AM Thực Hành Tiếng Nhật",
+                subtitle: "100 Câu Hỏi Biến Hóa Động Từ",
+                nameLabel: "Biệt danh:",
+                namePlaceholder: "Nhập biệt danh của bạn",
+                statusNotStarted: "Chưa Bắt Đầu",
+                statusInProgress: "Đang Tiến Hành",
+                startButton: "Bắt Đầu Luyện Tập",
+                submitButton: "Nộp Bài",
+                showAnswers: "Hiện Tất Cả Đáp Án",
+                hideAnswers: "Ẩn Tất Cả Đáp Án",
+                instructions: "Hướng dẫn: 100 câu hỏi về biến hóa động từ. Hãy nhập dạng được chỉ định của mỗi động từ. Nhấn Enter để kiểm tra.",
+                leaderboard: "Bảng Xếp Hạng Top 10",
+                progress: "Tiến Độ Hiện Tại",
+                help: "Trợ Giúp",
+                helpText: "Nhập câu trả lời và nhấn Enter để kiểm tra tự động. Bạn có thể nộp bài mà không cần hoàn thành tất cả câu hỏi.",
+                footer: "TCJ506AM Thực Hành Tiếng Nhật © 2023",
+                correctAnswer: "Đáp Án Đúng:",
+                answered: "Đã Trả Lời",
+                correct: "Đúng",
+                of: "/",
+                timeStart: "Thời Gian Bắt Đầu:",
+                timeElapsed: "Thời Gian Đã Qua:",
+                submitMessage: "Nộp bài hoàn tất!",
+                noRecords: "Chưa có bản ghi",
+                correctFeedback: "✓ Đúng!",
+                incorrectFeedback: "✗ Sai"
+            },
+            si: {
+                title: "TCJ506AM ජපන් භාෂා අභ්‍යාස",
+                subtitle: "ක්‍රියාපද ආකෘති ප්‍රශ්න 100",
+                nameLabel: "අන්වර්ථ නාමය:",
+                namePlaceholder: "ඔබගේ නම ඇතුළත් කරන්න",
+                statusNotStarted: "ආරම්භ කර නැත",
+                statusInProgress: "ක්‍රියාත්මක වෙමින්",
+                startButton: "අභ්‍යාසය ආරම්භ කරන්න",
+                submitButton: "උත්තර ඉදිරිපත් කරන්න",
+                showAnswers: "සියලුම උත්තර පෙන්වන්න",
+                hideAnswers: "සියලුම උත්තර සඟවන්න",
+                instructions: "විස්තර: ක්‍රියාපද ආකෘති ප්‍රශ්න 100. එක් එක් ක්‍රියාපදයේ නිශ්චිත ආකෘතිය ඇතුළත් කරන්න. Enter ඔබා උත්තර පරීක්ෂා කරන්න.",
+                leaderboard: "ජනප්‍රිය 10",
+                progress: "වර්තමාන ප්‍රගතිය",
+                help: "උදව්",
+                helpText: "උත්තරය ඇතුළත් කර Enter ඔබන්න. සියලු ප්‍රශ්න සම්පූර්ණ කිරීමෙන් තොරව ඉදිරිපත් කළ හැක.",
+                footer: "TCJ506AM ජපන් භාෂා අභ්‍යාස © 2023",
+                correctAnswer: "නිවැරදි උත්තරය:",
+                answered: "පිළිතුරු දී ඇත",
+                correct: "නිවැරදි",
+                of: "/",
+                timeStart: "ආරම්භක වේලාව:",
+                timeElapsed: "ගත වූ වේලාව:",
+                submitMessage: "ඉදිරිපත් කිරීම සම්පූර්ණයි!",
+                noRecords: "රෙකෝඩ් නැත",
+                correctFeedback: "✓ නිවැරදියි!",
+                incorrectFeedback: "✗ වැරදියි"
+            }
+        };
+
+        // 当前语言
+        let currentLang = 'zh';
+
+        // 题目数据 - 100道题目，包含动词变化和句子完形填空
+        const questionsData = [
+            // 动词变化题目 (1-60)
+            { ja: "書く - 辞書形", answer: "書く" },
+            { ja: "食べる - ない形", answer: "食べない" },
+            { ja: "する - た形", answer: "した" },
+            { ja: "来る - 過去否定形", answer: "来なかった" },
+            { ja: "行く - 可能形", answer: "行ける" },
+            { ja: "飲む - た形", answer: "飲んだ" },
+            { ja: "勉強する - 可能形", answer: "勉強できる" },
+            { ja: "遊ぶ - 辞書形", answer: "遊ぶ" },
+            { ja: "起きる - 可能形", answer: "起きられる" },
+            { ja: "買う - 過去否定形", answer: "買わなかった" },
+            { ja: "待つ - 可能形", answer: "待てる" },
+            { ja: "読む - た形", answer: "読んだ" },
+            { ja: "帰る - ない形", answer: "帰らない" },
+            { ja: "話す - 可能形", answer: "話せる" },
+            { ja: "来る - 可能形", answer: "来られる" },
+            { ja: "見る - 辞書形", answer: "見る" },
+            { ja: "聞く - ない形", answer: "聞かない" },
+            { ja: "歩く - た形", answer: "歩いた" },
+            { ja: "泳ぐ - 可能形", answer: "泳げる" },
+            { ja: "死ぬ - 過去否定形", answer: "死ななかった" },
+            { ja: "立つ - 辞書形", answer: "立つ" },
+            { ja: "座る - 可能形", answer: "座れる" },
+            { ja: "走る - た形", answer: "走った" },
+            { ja: "飛ぶ - ない形", answer: "飛ばない" },
+            { ja: "歌う - 可能形", answer: "歌える" },
+            { ja: "踊る - 辞書形", answer: "踊る" },
+            { ja: "笑う - た形", answer: "笑った" },
+            { ja: "泣く - ない形", answer: "泣かない" },
+            { ja: "考える - 可能形", answer: "考えられる" },
+            { ja: "教える - 過去否定形", answer: "教えなかった" },
+            { ja: "習う - 辞書形", answer: "習う" },
+            { ja: "覚える - ない形", answer: "覚えない" },
+            { ja: "忘れる - た形", answer: "忘れた" },
+            { ja: "知る - 可能形", answer: "知れる" },
+            { ja: "分かる - 過去否定形", answer: "分からなかった" },
+            { ja: "作る - 辞書形", answer: "作る" },
+            { ja: "使う - ない形", answer: "使わない" },
+            { ja: "開ける - た形", answer: "開けた" },
+            { ja: "閉める - 可能形", answer: "閉められる" },
+            { ja: "入る - 過去否定形", answer: "入らなかった" },
+            { ja: "出る - 辞書形", answer: "出る" },
+            { ja: "着る - ない形", answer: "着ない" },
+            { ja: "脱ぐ - た形", answer: "脱いだ" },
+            { ja: "洗う - 可能形", answer: "洗える" },
+            { ja: "掃除する - 過去否定形", answer: "掃除しなかった" },
+            { ja: "料理する - 辞書形", answer: "料理する" },
+            { ja: "食べる - 可能形", answer: "食べられる" },
+            { ja: "飲む - ない形", answer: "飲まない" },
+            { ja: "寝る - た形", answer: "寝た" },
+            { ja: "起きる - 過去否定形", answer: "起きなかった" },
+            { ja: "働く - 辞書形", answer: "働く" },
+            { ja: "休む - 可能形", answer: "休める" },
+            { ja: "遊ぶ - ない形", answer: "遊ばない" },
+            { ja: "学ぶ - た形", answer: "学んだ" },
+            { ja: "教わる - 過去否定形", answer: "教わらなかった" },
+            { ja: "書く - 可能形", answer: "書ける" },
+            { ja: "読む - ない形", answer: "読まない" },
+            { ja: "聞く - た形", answer: "聞いた" },
+            { ja: "話す - 辞書形", answer: "話す" },
+            { ja: "見る - 可能形", answer: "見られる" },
+
+            // 句子完形填空题目 (61-100)
+            { ja: "私は毎日日本語を______。 (勉強する - 辞書形)", answer: "勉強する" },
+            { ja: "昨日、映画を______。 (見る - た形)", answer: "見た" },
+            { ja: "明日、友達に______。 (会う - 辞書形)", answer: "会う" },
+            { ja: "この本を______。 (読む - 可能形)", answer: "読める" },
+            { ja: "彼はパーティーに______。 (来る - 過去否定形)", answer: "来なかった" },
+            { ja: "私は寿司が______。 (食べる - 可能形)", answer: "食べられる" },
+            { ja: "子供たちは公園で______。 (遊ぶ - た形)", answer: "遊んだ" },
+            { ja: "母は料理を______。 (作る - 辞書形)", answer: "作る" },
+            { ja: "彼女はピアノが______。 (弾く - 可能形)", answer: "弾ける" },
+            { ja: "私は昨日勉強を______。 (する - 過去否定形)", answer: "しなかった" },
+            { ja: "雨が______。 (降る - た形)", answer: "降った" },
+            { ja: "この問題が______。 (分かる - 可能形)", answer: "分かる" },
+            { ja: "ドアを______。 (開ける - 辞書形)", answer: "開ける" },
+            { ja: "窓を______。 (閉める - た形)", answer: "閉めた" },
+            { ja: "電車に______。 (乗る - 可能形)", answer: "乗れる" },
+            { ja: "バスを______。 (降りる - 過去否定形)", answer: "降りなかった" },
+            { ja: "手紙を______。 (書く - 辞書形)", answer: "書く" },
+            { ja: "電話を______。 (かける - た形)", answer: "かけた" },
+            { ja: "音楽を______。 (聞く - 可能形)", answer: "聞ける" },
+            { ja: "テレビを______。 (見る - 過去否定形)", answer: "見なかった" },
+            { ja: "新聞を______。 (読む - 辞書形)", answer: "読む" },
+            { ja: "コーヒーを______。 (飲む - た形)", answer: "飲んだ" },
+            { ja: "水を______。 (買う - 可能形)", answer: "買える" },
+            { ja: "ご飯を______。 (食べる - 過去否定形)", answer: "食べなかった" },
+            { ja: "シャワーを______。 (浴びる - 辞書形)", answer: "浴びる" },
+            { ja: "歯を______。 (磨く - た形)", answer: "磨いた" },
+            { ja: "服を______。 (着る - 可能形)", answer: "着られる" },
+            { ja: "靴を______。 (脱ぐ - 過去否定形)", answer: "脱がなかった" },
+            { ja: "仕事に______。 (行く - 辞書形)", answer: "行く" },
+            { ja: "家に______。 (帰る - た形)", answer: "帰った" },
+            { ja: "学校に______。 (来る - 可能形)", answer: "来られる" },
+            { ja: "会議に______。 (出席する - 過去否定形)", answer: "出席しなかった" },
+            { ja: "運動を______。 (する - 辞書形)", answer: "する" },
+            { ja: "散歩に______。 (行く - た形)", answer: "行った" },
+            { ja: "泳ぎに______。 (行く - 可能形)", answer: "行ける" },
+            { ja: "買い物に______。 (行く - 過去否定形)", answer: "行かなかった" },
+            { ja: "友達と______。 (話す - 辞書形)", answer: "話す" },
+            { ja: "先生に______。 (聞く - た形)", answer: "聞いた" },
+            { ja: "親に______。 (相談する - 可能形)", answer: "相談できる" },
+            { ja: "彼に______。 (会う - 過去否定形)", answer: "会わなかった" }
+        ];
+
+        // 初始化变量
+        let started = false;
+        let startTime = 0;
+        let timerInterval = null;
+        let correctAnswers = 0;
+        let answeredQuestions = 0;
+        const totalQuestions = questionsData.length;
+
+        // 设置语言
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // 更新语言按钮状态
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // 更新界面文本
+            document.getElementById('header-title').textContent = i18n[lang].title;
+            document.getElementById('header-meta').textContent = i18n[lang].subtitle;
+            document.getElementById('name-label').textContent = i18n[lang].nameLabel;
+            document.getElementById('playerName').placeholder = i18n[lang].namePlaceholder;
+            document.getElementById('startBtn').textContent = i18n[lang].startButton;
+            document.getElementById('submitBtn').textContent = i18n[lang].submitButton;
+            document.getElementById('showAllBtn').textContent = i18n[lang].showAnswers;
+            document.getElementById('hideAllBtn').textContent = i18n[lang].hideAnswers;
+            document.getElementById('instructions').textContent = i18n[lang].instructions;
+            document.getElementById('leaderboard-title').textContent = i18n[lang].leaderboard;
+            document.getElementById('progress-title').textContent = i18n[lang].progress;
+            document.getElementById('help-title').textContent = i18n[lang].help;
+            document.getElementById('help-text').textContent = i18n[lang].helpText;
+            document.getElementById('footer-text').textContent = i18n[lang].footer;
+            
+            // 更新问题文本
+            updateQuestionsText();
+            
+            // 更新状态
+            if (!started) {
+                document.getElementById('status').textContent = i18n[lang].statusNotStarted;
+            }
+            
+            // 更新进度文本
+            updateProgressText();
+            
+            // 更新排行榜
+            renderRecords();
+        }
+
+        // 更新问题文本
+        function updateQuestionsText() {
+            const questionsList = document.getElementById('questionsList');
+            const questionItems = questionsList.querySelectorAll('li');
+            
+            questionItems.forEach((item, index) => {
+                const question = questionsData[index];
+                const questionText = item.querySelector('.qhead');
+                questionText.textContent = `${index + 1}. ${question.ja}`;
+                
+                // 更新答案文本
+                const answerBox = item.querySelector('.answer');
+                if (answerBox) {
+                    const correctAnswerText = answerBox.querySelector('.correct-answer-text');
+                    
+                    if (correctAnswerText) {
+                        correctAnswerText.textContent = `${i18n[currentLang].correctAnswer} ${question.answer}`;
+                    }
+                }
+            });
+        }
+
+        // 更新进度文本
+        function updateProgressText() {
+            document.getElementById('progress').textContent = 
+                `${i18n[currentLang].answered} ${answeredQuestions} ${i18n[currentLang].of} ${totalQuestions}　${i18n[currentLang].correct} ${correctAnswers}`;
+        }
+
+        // 初始化问题
+        function initializeQuestions() {
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            
+            questionsData.forEach((question, index) => {
+                const li = document.createElement('li');
+                li.className = 'q';
+                li.id = `q${index}`;
+                
+                const questionHTML = `
+                    <div class="qhead">${index + 1}. ${question.ja}</div>
+                    <div>
+                        <input type="text" id="input-q${index}" placeholder="${i18n[currentLang].correctAnswer}を入力">
+                    </div>
+                    <div class="answer-feedback" id="feedback-q${index}"></div>
+                    <div class="answer" id="answer-q${index}">
+                        <div class="correct-answer-text">${i18n[currentLang].correctAnswer} ${question.answer}</div>
+                    </div>
+                `;
+                
+                li.innerHTML = questionHTML;
+                questionsList.appendChild(li);
+                
+                // 添加输入框事件
+                const input = document.getElementById(`input-q${index}`);
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        if (!started) start();
+                        checkAnswer(index);
+                    }
+                });
+                
+                // 添加输入框失去焦点事件
+                input.addEventListener('blur', function() {
+                    if (this.value.trim() !== '' && !started) {
+                        start();
+                    }
+                });
+            });
+        }
+
+        // 检查答案
+        function checkAnswer(index) {
+            const input = document.getElementById(`input-q${index}`);
+            const userAnswer = input.value.trim();
+            const question = questionsData[index];
+            const questionEl = document.getElementById(`q${index}`);
+            const feedback = document.getElementById(`feedback-q${index}`);
+            
+            if (userAnswer === '') return;
+            
+            // 检查是否已回答
+            if (!questionEl.classList.contains('answered')) {
+                questionEl.classList.add('answered');
+                answeredQuestions++;
+                
+                if (userAnswer === question.answer) {
+                    correctAnswers++;
+                    input.classList.add('correct');
+                    feedback.textContent = i18n[currentLang].correctFeedback;
+                    feedback.classList.add('correct');
+                    feedback.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    feedback.textContent = i18n[currentLang].incorrectFeedback;
+                    feedback.classList.add('incorrect');
+                    feedback.classList.remove('correct');
+                }
+                
+                feedback.style.display = 'block';
+                updateProgress();
+            }
+        }
+
+        // 开始练习
+        function start() {
+            if (started) return;
+            started = true;
+            startTime = Date.now();
+            document.getElementById('status').textContent = i18n[currentLang].statusInProgress;
+            document.getElementById('startBtn').disabled = true;
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // 更新计时器
+        function updateTimer() {
+            const el = document.getElementById('timer');
+            if (!started) {
+                el.textContent = `${i18n[currentLang].timeStart}—　${i18n[currentLang].timeElapsed}00:00:00`;
+                return;
+            }
+            
+            const s = Math.floor((Date.now() - startTime) / 1000);
+            const h = Math.floor(s / 3600);
+            const m = Math.floor((s % 3600) / 60);
+            const sec = s % 60;
+            const fmt = a => String(a).padStart(2, '0');
+            
+            el.textContent = `${i18n[currentLang].timeStart}${new Date(startTime).toLocaleString()}　${i18n[currentLang].timeElapsed}${fmt(h)}:${fmt(m)}:${fmt(sec)}`;
+        }
+
+        // 更新进度
+        function updateProgress() {
+            updateProgressText();
+            const progressPercent = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+        }
+
+        // 提交答案
+        function submit() {
+            if (!started) start();
+            clearInterval(timerInterval);
+            
+            // 检查所有已回答的问题
+            questionsData.forEach((question, index) => {
+                const input = document.getElementById(`input-q${index}`);
+                const userAnswer = input.value.trim();
+                const questionEl = document.getElementById(`q${index}`);
+                const feedback = document.getElementById(`feedback-q${index}`);
+                
+                if (userAnswer !== '' && !questionEl.classList.contains('answered')) {
+                    questionEl.classList.add('answered');
+                    answeredQuestions++;
+                    
+                    if (userAnswer === question.answer) {
+                        correctAnswers++;
+                        input.classList.add('correct');
+                        feedback.textContent = i18n[currentLang].correctFeedback;
+                        feedback.classList.add('correct');
+                        feedback.classList.remove('incorrect');
+                    } else {
+                        input.classList.add('incorrect');
+                        feedback.textContent = i18n[currentLang].incorrectFeedback;
+                        feedback.classList.add('incorrect');
+                        feedback.classList.remove('correct');
+                    }
+                    
+                    feedback.style.display = 'block';
+                }
+            });
+            
+            // 更新进度
+            updateProgress();
+            
+            // 显示所有答案
+            showAllAnswers();
+            
+            // 保存记录
+            const name = document.getElementById('playerName').value || i18n[currentLang].namePlaceholder;
+            const elapsed = Date.now() - startTime || 0;
+            const record = {
+                name,
+                correct: correctAnswers,
+                answered: answeredQuestions,
+                total: totalQuestions,
+                time: elapsed,
+                ts: Date.now(),
+                lang: currentLang
+            };
+            
+            saveRecord(record);
+            renderRecords();
+            
+            alert(`${i18n[currentLang].submitMessage} ${name} - ${i18n[currentLang].correct} ${correctAnswers} ${i18n[currentLang].of} ${totalQuestions}, ${i18n[currentLang].timeElapsed} ${formatMs(elapsed)}`);
+        }
+
+        // 显示所有答案
+        function showAllAnswers() {
+            questionsData.forEach((_, index) => {
+                document.getElementById(`answer-q${index}`).style.display = 'block';
+            });
+        }
+
+        // 隐藏所有答案
+        function hideAllAnswers() {
+            questionsData.forEach((_, index) => {
+                document.getElementById(`answer-q${index}`).style.display = 'none';
+            });
+        }
+
+        // 保存记录到本地存储
+        const STORAGE_KEY = 'japanese_verb_practice_records';
+        function loadRecords() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+        }
+        
+        function saveRecord(record) {
+            const records = loadRecords();
+            records.push(record);
+            records.sort((a, b) => {
+                if (b.correct !== a.correct) return b.correct - a.correct;
+                return a.time - b.time;
+            });
+            const topRecords = records.slice(0, 10);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(topRecords));
+        }
+        
+        function renderRecords() {
+            const records = loadRecords();
+            const recordsEl = document.getElementById('records');
+            recordsEl.innerHTML = '';
+            
+            if (records.length === 0) {
+                recordsEl.textContent = i18n[currentLang].noRecords;
+                return;
+            }
+            
+            records.forEach((record, index) => {
+                const recordEl = document.createElement('div');
+                recordEl.style.padding = '6px 4px';
+                recordEl.style.borderBottom = '1px solid #f0f6ff';
+                recordEl.innerHTML = `${index + 1}. ${record.name} — ${i18n[currentLang].correct}:${record.correct} ${i18n[currentLang].timeElapsed}${formatMs(record.time)}`;
+                recordsEl.appendChild(recordEl);
+            });
+        }
+        
+        function formatMs(ms) {
+            const s = Math.floor(ms / 1000);
+            const h = Math.floor(s / 3600);
+            const m = Math.floor((s % 3600) / 60);
+            const sec = s % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        }
+
+        // 检查昵称输入
+        function checkNameInput() {
+            const name = document.getElementById('playerName').value.trim();
+            if (name.length > 0) {
+                document.getElementById('startBtn').disabled = false;
+            } else {
+                document.getElementById('startBtn').disabled = true;
+            }
+        }
+
+        // 绑定事件
+        document.getElementById('playerName').addEventListener('input', checkNameInput);
+        document.getElementById('startBtn').addEventListener('click', start);
+        document.getElementById('submitBtn').addEventListener('click', submit);
+        document.getElementById('showAllBtn').addEventListener('click', showAllAnswers);
+        document.getElementById('hideAllBtn').addEventListener('click', hideAllAnswers);
+
+        // 语言切换
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                setLanguage(this.dataset.lang);
+            });
+        });
+
+        // 初始化
+        setLanguage('zh');
+        initializeQuestions();
+        renderRecords();
+        updateProgress();
+    </script>
+</body>
+</html>
